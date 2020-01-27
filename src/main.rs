@@ -23,8 +23,24 @@ fn handle_client(mut stream: TcpStream, buf_len: usize) {
         Err(_) => "".to_string(),
     };
 
-    let obody = format!("<html>\n<head><title>rpush</title></head>\n<body>\n<center><h1>Hello web from rust!</h1><d>{}</d></center>\n<hr><center>rpush/0</center>\n</body>\n</html>\n", istr);
-    let ostr = format!("{http} 200 OK\nServer: {srv}\nContent-Type:{type}\nContent-Length: {len}\n\n{body}", http=HTTP_VER, srv=SERVER_NAME, type="text/html", len=obody.len(), body=obody);
+    let obody = format!("<html>
+<head><title>rpush</title></head>
+<body>
+<center><h1>Hello web from rust!</h1>
+<d>
+{}
+</d>
+</center>
+<hr><center>rpush/0</center>
+</body>
+</html>
+", istr);
+    let ostr = format!("{http} 200 OK
+Server: {srv}
+Content-Type:{type}
+Content-Length: {len}
+
+{body}", http=HTTP_VER, srv=SERVER_NAME, type="text/html", len=obody.len(), body=obody);
     let obuf = ostr.as_bytes();
 
     stream.write(&obuf).unwrap();
@@ -56,11 +72,11 @@ fn main() -> io::Result<()> {
     };
 
     let max_threads = match settings.get("threads") {
-        Some(x) => x.parse::<u8>().unwrap(),
-        None => 4u8,
+        Some(x) => x.parse::<u32>().unwrap(),
+        None => 4,
     };
 
-    let max_read_len: usize = match settings.get("max_read_len") {
+    let max_read_len = match settings.get("max_read_len") {
         Some(x) => x.parse::<usize>().unwrap(),
         None => 4096,
     };
