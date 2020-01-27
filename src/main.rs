@@ -18,7 +18,9 @@ fn handle_client(mut stream: TcpStream, buf_len: usize) {
     let mut ibuf = Vec::<u8>::new();
     ibuf.resize(buf_len, 0);
     stream.read(&mut ibuf).expect("Read error!");
-    let istr = match String::from_utf8(ibuf) {
+    // ibuf.iter().take_while()
+    // let t = ibuf.iter().take_while(|&&x| x != 0).cloned().collect::<Vec<u8>>();
+    let istr = match String::from_utf8(ibuf.iter().take_while(|&&x| x != 0).cloned().collect::<Vec<u8>>()) {
         Ok(x) => x,
         Err(_) => "".to_string(),
     };
