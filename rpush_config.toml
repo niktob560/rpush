@@ -1,4 +1,6 @@
 ip = "127.0.0.1"
-port = 80
+port = 8080
 threads = 4
 max_read_len = 8192
+await_ns = 30000
+site_dir = "."
