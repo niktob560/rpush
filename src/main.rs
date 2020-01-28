@@ -129,9 +129,6 @@ fn handle_client(mut stream: TcpStream, buf_len: usize, site_dir: &str) {
 
     //send btes to peer
     stream.write(&obuf).unwrap();
-
-    //close connection
-    stream.shutdown(std::net::Shutdown::Both).expect("Failed to shutdown!");
 }
 
 fn main() -> io::Result<()> {
